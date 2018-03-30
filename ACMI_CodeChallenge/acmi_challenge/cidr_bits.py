@@ -53,4 +53,18 @@ def find_mac_address(filename, sys_stdin):
         i = i+1
                        
     return matches
+
+def explodereport(rawinput):
+    dumper = []
+    for line in rawinput:
+        dumper.append(exploder_helper(line.split('|'), 1)) 
         
+    return dumper  
+
+def exploder_helper(lst, index):
+    hsh = {}
+    if index < len(lst):
+        hsh[lst[index-1]] = exploder_helper(lst, index+1)
+        return hsh
+
+    return lst[index-1] 

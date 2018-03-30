@@ -59,6 +59,20 @@ class Test(unittest.TestCase):
                 self.assertEqual(expected, result, 
                              'Error: expected %s, received %s'% (str(expected),
                                                              str(result)))
+    
+    def testNestedHashConstructor(self):
+        rawinput = ['app1|server1|uptime|5', 
+                    'app1|server1|loadavg|0.01 0.02 0.03',
+                    'app1|server1|conn1|state|up', 
+                    'app1|server2|uptime|10', 
+                    'app1|server2|loadavg|0.11 0.22 0.33', 
+                    'app1|server2|conn1|state|down', 
+                    'app1|running|true', ]
+        result = cb.explodereport(rawinput)
+        expected = True
+        self.assertEqual(expected, result, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
         
 
 if __name__ == "__main__":
