@@ -69,7 +69,14 @@ class Test(unittest.TestCase):
                     'app1|server2|conn1|state|down', 
                     'app1|running|true', ]
         result = cb.explodereport(rawinput)
-        expected = True
+        expected = {'app1': {'running': 'true', 
+                             'server1': {'uptime': '5', 
+                                         'loadavg': '0.01 0.02 0.03', 
+                                         'conn1': {'state': 'up'}}, 
+                             'server2': {'uptime': '10', 
+                                         'loadavg': '0.11 0.22 0.33', 
+                                         'conn1': {'state': 'down'}}}}
+ 
         self.assertEqual(expected, result, 
                          'Error: expected %s, received %s'% (str(expected),
                                                              str(result)))

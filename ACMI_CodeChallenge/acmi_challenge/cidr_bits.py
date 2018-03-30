@@ -5,6 +5,7 @@ Created on Mar 29, 2018
 '''
 
 import re
+import json
 
 # RFC 1878 - https://tools.ietf.org/html/rfc1878
 NETMASK_LOOKUP_TABLE = ["128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0",
@@ -55,16 +56,26 @@ def find_mac_address(filename, sys_stdin):
     return matches
 
 def explodereport(rawinput):
-    dumper = []
+    dumper = {}
     for line in rawinput:
-        dumper.append(exploder_helper(line.split('|'), 1)) 
-        
+        exploder_helper(line.split('|'), 0, dumper) 
+    
+    # use json dumper for desired print
+    print json.dumps(dumper, indent=4, sort_keys=True)
+    
     return dumper  
 
-def exploder_helper(lst, index):
-    hsh = {}
-    if index < len(lst):
-        hsh[lst[index-1]] = exploder_helper(lst, index+1)
-        return hsh
-
-    return lst[index-1] 
+def exploder_helper(lst, index, hsh):
+    
+    if index < (len(lst) -1):
+        if hsh.has_key(str(lst[index])):
+            hsh[str(lst[index])] = exploder_helper(lst, index+1, 
+                                                   hsh[str(lst[index])])
+            return hsh
+        else:
+            hsh[str(lst[index])] = exploder_helper(lst, index+1, {})
+            return hsh        
+    else:
+        return lst[index] 
+    
+    
