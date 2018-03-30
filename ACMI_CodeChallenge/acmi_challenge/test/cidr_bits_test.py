@@ -5,6 +5,7 @@ Created on Mar 29, 2018
 '''
 import unittest
 import acmi_challenge.cidr_bits as cb
+import acmi_challenge.custom_dict as cd
 import os
 
 INPUT_DIR = "../inputs/"
@@ -81,6 +82,50 @@ class Test(unittest.TestCase):
                          'Error: expected %s, received %s'% (str(expected),
                                                              str(result)))
         
-
+    def testCustomDictConstructorInit(self):
+        # Tricky, because I could just use the internal dict syntax 
+        # but I used a string to keep the input format
+        # just one extra step. Also, could have a wild card on 
+        # input parameters, another step to parse a **params array.
+        rawinput = "deer => 'park', foo => 'bar', this => 'that'" 
+        result = cd.CustomDict(rawinput)
+        expected = 'that'
+        self.assertEqual(expected, result.this, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        expected = 'park'
+        self.assertEqual(expected, result.deer, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        expected = 'bar'
+        self.assertEqual(expected, result.foo, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+    
+    def testCustomDictConstructorModifiers(self):
+        rawinput = "deer => 'park', foo => 'bar', this => 'that'"
+        result = cd.CustomDict(rawinput)
+        result.delete('this'); 
+        result.add("gnu => 'linux'"); 
+        result.modify("gnu => 'not unix'"); 
+        print result.get('gnu') 
+        result.modify("deer => 'venison'"); 
+        result.modify("gnu => 'emacs'"); 
+        result.deltas; 
+        expected = 'emacs'
+        self.assertEqual(expected, result.gnu, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        expected = 'bar'
+        self.assertEqual(expected, result.foo, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        res = result.deltas()
+        expected = {'this': 'DELETE this', 'deer': 'MODIFY deer = venison', 
+                    'gnu': 'MODIFY gnu = emacs'}
+        self.assertEqual(expected, res, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        
 if __name__ == "__main__":
     unittest.main()
