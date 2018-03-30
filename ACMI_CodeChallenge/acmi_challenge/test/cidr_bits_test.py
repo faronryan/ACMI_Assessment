@@ -5,6 +5,9 @@ Created on Mar 29, 2018
 '''
 import unittest
 import acmi_challenge.cidr_bits as cb
+import os
+
+INPUT_DIR = "../inputs/"
 
 class Test(unittest.TestCase):
     
@@ -37,6 +40,26 @@ class Test(unittest.TestCase):
         self.assertEqual(expected, result, 
                          'Error: expected %s, received %s'% (str(expected),
                                                              str(result)))
+    def testFindMacAddresFile1(self):
+        for filename in os.listdir(INPUT_DIR):            
+            # rawinput = open(INPUT_DIR+"inputs01.txt", "r")
+            rawinput = open(INPUT_DIR+filename, "r") 
+            result = cb.find_mac_address(filename,rawinput)
+            
+            if(filename == "inputs01.txt"): # just checking one file in the 
+                                            # directory; more can be addeded
+                # print filename, result
+                expected = [{'inputs01.txt': {'line[1]': 
+                                              ['AA:BB:CC:DD:EE:FF', 'AA:BB:CC:DD:EE:FF']}},
+                             {'inputs01.txt': {'line[3]': ['BA:BC:CC:DD:EE:FF']}}, 
+                             {'inputs01.txt': {'line[5]': ['CC:BB:CC:DD:EE:DD']}}, 
+                             {'inputs01.txt': {'line[7]': ['DE:AD:BE:EF:AA:CC']}}, 
+                             {'inputs01.txt': {'line[23]': ['BE:DE:AD:BE:EF:AA']}}, 
+                             {'inputs01.txt': {'line[26]': ['AA:BB:CC:DD:EE:FF']}}]
+                self.assertEqual(expected, result, 
+                             'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        
 
 if __name__ == "__main__":
     unittest.main()
