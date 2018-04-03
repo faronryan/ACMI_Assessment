@@ -4,7 +4,7 @@ Created on Mar 29, 2018
 @author: Faron Ryan
 '''
 import unittest
-import acmi_challenge.cidr_bits as cb
+import acmi_challenge.code_challenge as cb
 import acmi_challenge.custom_dict as cd
 import os
 
