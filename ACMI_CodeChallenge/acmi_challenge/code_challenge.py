@@ -30,11 +30,11 @@ def netmask_to_bits(rawinput):
         result = [bin(x).count("1") for x in arr] 
         return sum(result)
     except ValueError:
-        return -1
+        print "Invalid character found in NETMASK!"
     except OutofBoundsError:
-        return -1 
+        return "Invalid NETMASK!"
     
-    return -1
+    return -1 
 
 def check_bounds(rawinput):
     if rawinput not in NETMASK_LOOKUP_TABLE:
