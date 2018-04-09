@@ -1,2 +1,4 @@
 /__init__.pyc
-/*.pyc
+/custom_dict.pyc
+/code_challenge.pyc
+/test/code_challenge_test.pyc
