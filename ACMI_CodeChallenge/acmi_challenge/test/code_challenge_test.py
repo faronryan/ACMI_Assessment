@@ -7,6 +7,7 @@ import unittest
 import acmi_challenge.code_challenge as cb
 import acmi_challenge.custom_dict as cd
 import os
+from datetime import datetime, timedelta, date
 
 INPUT_DIR = "../inputs/"
 
@@ -30,7 +31,7 @@ class Test(unittest.TestCase):
     def testCidrBitsFailOutofBoundsError(self):
         rawinput = "255.1.2.3" 
         result = cb.netmask_to_bits(rawinput)
-        expected = -1
+        expected = "Invalid NETMASK!"
         self.assertEqual(expected, result, 
                          'Error: expected %s, received %s'% (str(expected),
                                                              str(result)))
@@ -108,7 +109,7 @@ class Test(unittest.TestCase):
         result.delete('this'); 
         result.add("gnu => 'linux'"); 
         result.modify("gnu => 'not unix'"); 
-        print result.get('gnu') 
+        print(result.get('gnu'))
         result.modify("deer => 'venison'"); 
         result.modify("gnu => 'emacs'"); 
         result.deltas; 
@@ -126,6 +127,18 @@ class Test(unittest.TestCase):
         self.assertEqual(expected, res, 
                          'Error: expected %s, received %s'% (str(expected),
                                                              str(result)))
+    
+    def testConvertDate(self):  
+        # rawinput = datetime.now(...)
+        # since time is moving to generate test case we hard-code
+        rawinput = datetime(2018,4,11,5,0)
+        result = cb.convert_date(rawinput)
+        print(result)
+        expected = ['2018-04-11','11-04-2018','05:00:00','2018-04-07']
+        self.assertEqual(expected, result, 
+                         'Error: expected %s, received %s'% (str(expected),
+                                                             str(result)))
+        
         
 if __name__ == "__main__":
     unittest.main()

@@ -53,6 +53,6 @@ class CustomDict(object):
     
     def deltas(self):
         for key, value in self.history.iteritems():
-            print value
+            print(value)
         return self.history
         

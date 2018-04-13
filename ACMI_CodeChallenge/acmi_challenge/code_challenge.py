@@ -6,6 +6,7 @@ Created on Mar 29, 2018
 
 import re
 import json
+from datetime import datetime, timedelta
 
 # RFC 1878 - https://tools.ietf.org/html/rfc1878
 NETMASK_LOOKUP_TABLE = ["128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0",
@@ -30,9 +31,9 @@ def netmask_to_bits(rawinput):
         result = [bin(x).count("1") for x in arr] 
         return sum(result)
     except ValueError:
-        print "Invalid character found in NETMASK!"
+        print ("Invalid character found in NETMASK!")
     except OutofBoundsError:
-        return "Invalid NETMASK!"
+        return ("Invalid NETMASK!")
     
     return -1 
 
@@ -49,7 +50,7 @@ def find_mac_address(filename, sys_stdin):
         match = re.findall('[\\s]+[a-f0-9_]{2}:[a-f0-9_]{2}:[a-f0-9_]{2}:'+
                    '[a-f0-9_]{2}:[a-f0-9_]{2}:[a-f0-9_]{2}[\\s]+', 
                    line, re.IGNORECASE)
-        if match:
+        if match: 
             matches.append({filename: {'line['+str(i)+']':map(str.strip, match)}})
         i = i+1
                        
@@ -61,7 +62,7 @@ def explodereport(rawinput):
         exploder_helper(line.split('|'), 0, dumper) 
     
     # use json dumper for desired print
-    print json.dumps(dumper, indent=4, sort_keys=True)
+    print(json.dumps(dumper, indent=4, sort_keys=True))
     
     return dumper  
 
@@ -78,4 +79,10 @@ def exploder_helper(lst, index, hsh):
     else:
         return lst[index] 
     
+def convert_date(rawinput):
+    date_set = [rawinput.strftime("%Y-%m-%d"), rawinput.strftime("%d-%m-%Y"),
+                rawinput.strftime("%I:%M:%S"),
+                (rawinput - timedelta(days=4)).strftime("%Y-%m-%d")]
+    return date_set
+
     
